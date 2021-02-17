@@ -2,9 +2,12 @@
 // Evaluate postfix expressions such as 3 2 4 * +
 // David John
 // February 2020
+// February 2021 -- modified
 
 import java.util.Stack;
 import java.util.EmptyStackException;
+import java.util.ArrayList;
+
 import java.util.Scanner;
 
 
@@ -14,11 +17,21 @@ public class Main {
     // computed expressions
     private static Stack<Integer> myStack;
 
+    // Operators holds the supported operators
+    private static ArrayList<String> Operators = new ArrayList<String>();
+
     public static void main(String[] args) {
 
+
         // instantiate myStack and keyboard
-        myStack = new Stack<>();
+        myStack = new Stack<Integer>();
         Scanner keyboard = new Scanner(System.in);
+
+        // setup supported Operators
+        Operators.add("+");
+        Operators.add("-");
+        Operators.add("*");
+        Operators.add("/");
 
         // prompt for  a single line of input
         // and process expression tokens
@@ -27,7 +40,7 @@ public class Main {
         String[] usertokens = userinput.split(" ");
         for (String myToken : usertokens) {
 
-            // try to convent myToken to an integer, if so
+            // try to convert myToken to an integer, if so
             // push it; otherwise consider it an operator
             try {
                 int myVal = Integer.parseInt(myToken);
@@ -54,25 +67,39 @@ public class Main {
     // using operator token compute the expression
     // not elegant, but ok
     public static void Evaluation (String token){
+
+        // local variables to hold arguments
+        int val1 =0;
+        int val2= 0;
+
+        // check to make sure operator is one supported
+        if (!Operators.contains(token)){
+            System.out.println("Unsupported operator <"+token+">");
+            System.exit(44);
+        }
+
+        // get arguments from operand stack
+        try{
+            val1 = myStack.pop();
+            val2 = myStack.pop();
+        } catch (EmptyStackException e){
+            System.out.println("  Not enough arguments for operator <"+token+">");
+            System.exit(3);
+        }
+
+        // evaluate result based on operator and operands, place
+        // result back into stack
         if (token.equals("+")){
-            try{
-                int val1 = myStack.pop();
-                int val2 = myStack.pop();
-                myStack.push(val1+val2);
-            } catch (EmptyStackException e){
-                System.out.println("  ILLEGAL EXPRESSION involving +");
-                System.exit(3);
-            }
+            myStack.push(val1+val2);
+        }
+        else if (token.equals("-")){
+                myStack.push(val1-val2);
         }
         else if (token.equals("*")) {
-            try {
-                int val1 = myStack.pop();
-                int val2 = myStack.pop();
                 myStack.push(val1 * val2);
-            } catch (EmptyStackException e){
-                System.out.println(" ILLEGAL EXPRESSION involving I");
-                System.exit(4);
-            }
+        }
+        else if (token.equals("/")) {
+                myStack.push(val1 / val2);
         }
     }
 }
