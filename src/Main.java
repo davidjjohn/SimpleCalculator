@@ -32,6 +32,7 @@ public class Main {
         Operators.add("-");
         Operators.add("*");
         Operators.add("/");
+        Operators.add("?");
 
         // prompt for  a single line of input
         // and process expression tokens
@@ -71,6 +72,7 @@ public class Main {
         // local variables to hold arguments
         int val1 =0;
         int val2= 0;
+        int val3 = 0;
 
         // check to make sure operator is one supported
         if (!Operators.contains(token)){
@@ -89,17 +91,31 @@ public class Main {
 
         // evaluate result based on operator and operands, place
         // result back into stack
+        // val1 + val2
         if (token.equals("+")){
             myStack.push(val1+val2);
         }
+        // val1-val2
         else if (token.equals("-")){
                 myStack.push(val1-val2);
         }
+        // val1*val2
         else if (token.equals("*")) {
                 myStack.push(val1 * val2);
         }
+        //   val1/val2
         else if (token.equals("/")) {
                 myStack.push(val1 / val2);
+        }
+        // custom ternary operator ?(val1,val2,val3)=(val1+2*val2+3*val3)/3
+        else if (token.equals("?")) {
+            try{
+                val3 = myStack.pop();
+                myStack.push( (val1 + 2*val2 + 3*val3)/3 );
+            }catch (EmptyStackException e){
+                System.out.println("  Not enough arguments for operator <?>");
+                System.exit(13);
+            }
         }
     }
 }
