@@ -2,7 +2,7 @@
 // Evaluate postfix expressions such as 3 2 4 * +
 // David John
 // February 2020
-// February 2021 -- modified
+// February 2021 -- modified and better comments
 
 import java.util.Stack;
 import java.util.EmptyStackException;
